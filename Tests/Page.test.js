@@ -4,6 +4,8 @@ describe(`page`,() => {
   let browser = null;
   let page = null;
   let context = null; 
+  let locator = null;
+  let count = null;
 
   beforeAll(async () => {
    browser = await chromium.launch();
@@ -23,7 +25,7 @@ describe(`page`,() => {
   });
 
   test('Input 200 tasks into page', async() =>{
-    for( i=0; i<100; i++){
+    for(var i=0; i<100; i++){
       locator = page.locator('input.new-todo');
       await locator.fill('Test' +i);
       await locator.press('Enter');    
@@ -35,7 +37,6 @@ describe(`page`,() => {
 
   test('Test Source link on page', async() => {
   const sourcelink = page.url('a:has-text("vanillajs")');
-  console.log(sourcelink);
   expect(sourcelink).not.toBeNull();
   });
 });
