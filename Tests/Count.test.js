@@ -62,10 +62,10 @@ describe(`these are test cases for the count value on the page`,() => {
         await expect(count).not.toBeNull();
       });   
         // Validate count once a task is deleted
-   /* test(`Validate count once a task is delete`, async() =>{
+    test.skip('Validate count once a task is delete', async() =>{
       await page.getByRole('listitem').filter({ hasText: 'prepare for physics tests' }).getByRole('button', { name: '×' }).click();
        count = await page.getByRole('strong').allTextContents()
           //assertion
        await expect(count).toEqual([]);
-     });   */
+     });   
 });
