@@ -4,13 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "playwright-test": "npx playwright test Tests",
+    "lint": "node node_modules/eslint/bin/eslint.js ./Tests//*.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-env": "^7.21.4",
+    "@playwright/test": "^1.32.3",
+    "eslint": "^8.32.0",
+    "eslint-config-semistandard": "^16.0.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
     "jest": "^27.5.1",
     "playwright": "^1.32.2"
   }

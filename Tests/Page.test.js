@@ -1,42 +1,40 @@
-const {chromium} = require('playwright');
+import { PageObjects } from '../common/pageObjects';
+import { Constants } from '../common/constants';
+const { test, expect, chromium } = require('@playwright/test');
 
-describe(`page`,() => {
+test.describe('page', () => {
   let browser = null;
   let page = null;
-  let context = null; 
-  let locator = null;
+  let pageObjects = null;
+  let context = null;
   let count = null;
 
-  beforeAll(async () => {
-   browser = await chromium.launch();
-   context = await browser.newContext();
-   page = await context.newPage();
-   await page.goto('https://todomvc.com/examples/vanillajs/');
-  
+  test.beforeAll(async () => {
+    browser = await chromium.launch();
+    context = await browser.newContext();
+    page = await context.newPage();
+    pageObjects = new PageObjects(page);
+    await pageObjects.goToUrl(Constants.stringConstants.url);
   });
-  
-  afterAll(async() =>{
+
+  test.afterAll(async () => {
     await browser.close();
   });
 
-  test(`Should load page`, async() => {
-    //Assertion on loading page
+  test('Should load page', async () => {
     expect(page).not.toBeNull();
   });
 
-  test('Input 200 tasks into page', async() =>{
-    for(var i=0; i<100; i++){
-      locator = page.locator('input.new-todo');
-      await locator.fill('Test' +i);
-      await locator.press('Enter');    
-     }
-     count = await page.getByRole('strong').allTextContents();   
-  //assertion
-     expect(count).toEqual(['100']);
+  test('Input 200 tasks into page', async () => {
+    for (let i = 0; i < 100; i++) {
+      await pageObjects.addToDo(`Test${i}`, 'Enter');
+    }
+    count = await page.getByRole('strong').allTextContents();
+    expect(count).toEqual(['100']);
   });
 
-  test('Test Source link on page', async() => {
-  const sourcelink = page.url('a:has-text("vanillajs")');
-  expect(sourcelink).not.toBeNull();
+  test('Test Source link on page', async () => {
+    const sourcelink = page.url('a:has-text("vanillajs")');
+    expect(sourcelink).not.toBeNull();
   });
 });

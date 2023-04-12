@@ -1,28 +1,28 @@
-const {chromium} = require('playwright');
+import { PageObjects } from '../common/pageObjects';
+import { Constants } from '../common/constants';
+const { test, expect, chromium } = require('@playwright/test');
 
-
-describe(`accessibility`,() => {
+test.describe('accessibility', () => {
   let browser = null;
+  let context = null;
   let page = null;
-  let context = null; 
+  let pageObjects = null;
 
-  beforeAll(async () => {
-   browser = await chromium.launch();
-   context = await browser.newContext();
-   page = await context.newPage();
-   await page.goto('https://todomvc.com/examples/vanillajs/');
-  
-  });
-  
-  afterAll(async() =>{
-    await browser.close()    ;
+  test.beforeAll(async () => {
+    browser = await chromium.launch();
+    context = await browser.newContext();
+    page = await context.newPage();
+    pageObjects = new PageObjects(page);
+    await pageObjects.goToUrl(Constants.stringConstants.url);
   });
 
-  test(`Should load page'`, async() => {
-    //Assertion on loading page
-   await expect(page).not.toBeNull();
-   const url = page.getByLabel('VanillaJS • TodoMVC');
-    await expect(url).not.toBeNull() ;
-  });  
+  test.afterAll(async () => {
+    await browser.close();
+  });
+
+  test('Should load page', async () => {
+    await expect(page).not.toBeNull();
+    const title = page.getByLabel('VanillaJS • TodoMVC');
+    await expect(title).not.toBeNull();
+  });
 });
- 
